@@ -1,4 +1,4 @@
-package tk.cs.lr.mulithreading;
+package tk.cs.lr.mulithreading.mth01;
 
 public class ThreadCustom implements Runnable {
 
