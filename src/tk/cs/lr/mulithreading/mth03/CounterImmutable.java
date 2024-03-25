@@ -1,10 +1,11 @@
 package tk.cs.lr.mulithreading.mth03;
 
 public class CounterImmutable {
-        private final int counterImmutable;
+        private final int COUNTERIMMUTABLE;
+        private  final int CONST = 10;
 
-        public CounterImmutable(int counterImmutable){
-            this.counterImmutable = counterImmutable;
+        public CounterImmutable(int COUNTERIMMUTABLE){
+            this.COUNTERIMMUTABLE = COUNTERIMMUTABLE;
         }
 
 //        public void incrementCounter(){
@@ -12,6 +13,6 @@ public class CounterImmutable {
 //        }
 
         public int getCounter(){
-            return this.counterImmutable;
+            return this.COUNTERIMMUTABLE;
         }
 }
