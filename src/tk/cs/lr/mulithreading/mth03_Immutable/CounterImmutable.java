@@ -1,4 +1,4 @@
-package tk.cs.lr.mulithreading.mth03;
+package tk.cs.lr.mulithreading.mth03_Immutable;
 
 public class CounterImmutable {
         private final int COUNTERIMMUTABLE;

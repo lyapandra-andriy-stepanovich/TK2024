@@ -1,4 +1,4 @@
-package tk.cs.lr.mulithreading.mth02;
+package tk.cs.lr.mulithreading.mth02_Atomic;
 
 public class CounterInt {
     private int counter = 0;
