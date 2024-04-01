@@ -3,46 +3,57 @@ package tk.cs.lr.mulithreading.mth06_Semaphore;
 import java.util.concurrent.Semaphore;
 
 public class SemaphoreDemo {
-    public static boolean[] VAC_NUMB = new boolean[5];
-    public static final Semaphore SEMAPHORE = new Semaphore(2, true);
+    private static final boolean[] VAC_NUMB = new boolean[6];
+    private static final Semaphore SEMAPHORE = new Semaphore(5, true);
 
     public static void main(String[] args) throws InterruptedException {
-        for (int nn_of_Thread = 1; nn_of_Thread < 10; nn_of_Thread++) {
-            System.out.println("Run new thread " + nn_of_Thread);
+        for (int nn_of_Thread = 1; nn_of_Thread <= 7; nn_of_Thread++) {
+            System.out.println("1 Start new thread " + nn_of_Thread);
             new Thread(new ConcurrentObject(nn_of_Thread)).start();
-            System.out.println("The thread is sleeping " + nn_of_Thread);
+            System.out.println("3 The thread " + nn_of_Thread + " is running ");
             Thread.sleep(400);
-            System.out.println("The thread has finished " + nn_of_Thread);
+            System.out.println("6 The thread " + nn_of_Thread + " has finished ");
+            System.out.println();
         }
     }
 
-    static class ConcurrentObject implements Runnable {
+    public static class ConcurrentObject implements Runnable {
         private int threadCnt;
 
-        public ConcurrentObject(int carCnt) {
-            this.threadCnt = carCnt;
+        public ConcurrentObject(int threadCnt) {
+            this.threadCnt = threadCnt;
         }
 
         @Override
         public void run() {
             try {
-                SemaphoreDemo.SEMAPHORE.acquire();
-                System.out.println("SEMAPHORE acquired");
-                for (int i = 0; i < 4; i++) {
-                    System.out.println("i = " + i);
-                    if (!SemaphoreDemo.VAC_NUMB[i]) {
-                        SemaphoreDemo.VAC_NUMB[i] = true;
-                        System.out.println("code " + threadCnt + " is working. SemaphoreDemo.VAC_NUMB[i] = " + SemaphoreDemo.VAC_NUMB[i]);
-                        break;
-                    }
+                SEMAPHORE.acquire();
+                System.out.printf("2 SEMAPHORE acquired %d\n", threadCnt);
+                int taskNumber = 0;
+
+                synchronized (VAC_NUMB) {
+                    for (int VAC_NUMB_cnt = 1; VAC_NUMB_cnt < 6; VAC_NUMB_cnt++)
+                        if (!VAC_NUMB[VAC_NUMB_cnt]) {
+                            VAC_NUMB[VAC_NUMB_cnt] = true;
+                            taskNumber = VAC_NUMB_cnt;
+                            System.out.printf("5 Thread " + threadCnt + " processing the task = ",VAC_NUMB_cnt);
+                            break;
+                        }
                 }
-                Thread.sleep(200);
-                SEMAPHORE.release();
-                System.out.println("Semaphore " + threadCnt + " is Out");
-                System.out.println();
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
+
+                Thread.sleep(5000);
+
+                synchronized (VAC_NUMB) {
+                    VAC_NUMB[taskNumber] = false;
+                }
+                System.out.println("Task " + taskNumber + " is done");
+
+            } catch (InterruptedException ex) {
+                throw new RuntimeException(ex);
             }
+            SEMAPHORE.release();
+            System.out.println("7 SEMAPHORE acquired" + threadCnt);
+            System.out.println("7 Semaphore " + threadCnt + " is Out");
         }
     }
 }
